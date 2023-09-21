@@ -42,20 +42,25 @@ def handle_client_socket(client_socket):
         client_socket.close()
 
 
-address = "127.0.0.1"
-port = 7345
-server_socket = socket(AF_INET, SOCK_STREAM)
-server_socket.bind((address, port))
-server_socket.listen()
-print(f"Socket listening {address}:{port}")
+def main():
+    address = "127.0.0.1"
+    port = 7345
+    server_socket = socket(AF_INET, SOCK_STREAM)
+    server_socket.bind((address, port))
+    server_socket.listen()
+    print(f"Socket listening {address}:{port}")
 
-while True:
-    client_socket, (addr, port) = server_socket.accept()
-    print(f"Serving {addr}:{port}")
-    thread = threading.Thread(target=handle_client_socket, args=(client_socket,))
-    thread.start()
-    thread.join()
+    while True:
+        client_socket, (addr, port) = server_socket.accept()
+        print(f"Serving {addr}:{port}")
+        thread = threading.Thread(target=handle_client_socket, args=(client_socket,))
+        thread.start()
+        thread.join()
 
-server_socket.close()
+    server_socket.close()
 
-sys.exit()  # Terminate the program after sending the corresponding data
+    sys.exit()  # Terminate the program after sending the corresponding data
+
+
+if __name__ == "__main__":
+    main()
