@@ -3,7 +3,8 @@ import threading
 from socket import *
 
 
-def handle_client_socket(client_socket):
+def handle_client_socket(client_socket, addr, port):
+    print(f"{threading.current_thread().ident} | Serving {addr}:{port}")
     try:
         message = client_socket.recv(1024).decode()
         filename = message.split()[1]
@@ -52,8 +53,9 @@ def main():
 
     while True:
         client_socket, (addr, port) = server_socket.accept()
-        print(f"Serving {addr}:{port}")
-        thread = threading.Thread(target=handle_client_socket, args=(client_socket,))
+        thread = threading.Thread(
+            target=handle_client_socket, args=(client_socket, addr, port)
+        )
         thread.start()
         thread.join()
 
